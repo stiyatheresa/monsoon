@@ -563,3 +563,61 @@ input.is-error{border-color:#b3261e}
   .heart{display:block}
   .trip__body::after{display:none}
 }
+
+
+/* Clean outline text */
+.marquee__row span{color:#fff;-webkit-text-stroke:3px var(--ink);paint-order:stroke fill}
+.marquee__row span:nth-child(3n){color:var(--accent);-webkit-text-stroke:0}
+.why2__list span{color:#fff;-webkit-text-stroke:2.8px var(--accent);paint-order:stroke fill}
+
+/* Deeper forest green */
+:root{--accent:#0b4a3c;--accent-dark:#062b23;--accent-soft:#e1ece8;--ink:#10201b;--trail:#e8a23a}
+
+/* ===== Mountain range dividers with trail ===== */
+.peaks{position:relative;display:block;height:clamp(80px,11vw,170px);margin-top:112px;overflow:hidden;line-height:0}
+.peaks svg{position:absolute;left:-2%;bottom:-1px;width:104%;height:100%}
+.peaks .l-back,.peaks .l-mid{will-change:transform}
+.peaks .l-back{opacity:.28}
+.peaks .l-mid{opacity:.55}
+.peaks .trail{fill:none;stroke:var(--trail);stroke-width:2.5;stroke-dasharray:2 9;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dashoffset:var(--dash,0)}
+.peaks .flag{fill:var(--trail)}
+.peaks .wv{animation:wv linear infinite}
+@keyframes wv{to{transform:translateX(-1440px)}}
+.peaks--savanna,.peaks--balloons,.peaks--island,.peaks--camp,.peaks--flags{height:clamp(110px,13vw,190px)}
+.peaks .bob{animation:bob ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-10px)}}
+.peaks .sway,.peaks .flutter,.peaks .flame{transform-box:fill-box}
+.peaks .sway{transform-origin:50% 100%;animation:sway 5s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-1.5deg)}to{transform:rotate(1.5deg)}}
+.peaks .flutter{transform-origin:50% 0;animation:flutter 1.6s ease-in-out infinite alternate}
+@keyframes flutter{from{transform:skewX(-8deg) scaleY(.92)}to{transform:skewX(8deg) scaleY(1)}}
+.peaks .flame{transform-origin:50% 100%;animation:flame .35s ease-in-out infinite alternate}
+@keyframes flame{from{transform:scaleY(.88) scaleX(1.05)}to{transform:scaleY(1.08) scaleX(.95)}}
+.peaks .glow{animation:glow 1.2s ease-in-out infinite alternate}
+@keyframes glow{from{opacity:.35}to{opacity:.7}}
+.peaks .pole{stroke:var(--trail);stroke-width:2;vector-effect:non-scaling-stroke}
+.peaks--flush{margin-top:0}
+.story,.sigx,.rev{margin-top:0}
+@media (max-width:960px){.peaks{margin-top:80px}.peaks--flush{margin-top:0}}
+
+/* ===== Side climber on a cliff face ===== */
+.alt{display:none}
+.climb{--top:96px;--bot:34px;position:fixed;right:0;top:var(--top);bottom:var(--bot);width:150px;z-index:40;pointer-events:none;opacity:0;transform:translateX(30px);transition:opacity .5s,transform .5s}
+.climb.is-on{opacity:1;transform:none}
+.climb__cliff{position:absolute;right:0;top:0;width:44px;height:100%;filter:drop-shadow(-3px 0 8px rgba(0,0,0,.18))}
+.climb__flag{position:absolute;right:16px;top:-26px}
+.climb__camps{list-style:none;margin:0;padding:0;position:absolute;right:44px;top:0;bottom:0;width:100px}
+.climb__camps li{position:absolute;right:6px;bottom:var(--y);transform:translateY(50%);display:flex;flex-direction:column;align-items:flex-end;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#10201b;background:rgba(255,255,255,.92);padding:3px 8px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.12);opacity:.55;transition:opacity .4s,background .4s,color .4s}
+.climb__camps li b{font-size:9px;letter-spacing:0;font-weight:700;opacity:.7}
+.climb__camps li::after{content:"";position:absolute;right:-12px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px #0b4a3c}
+.climb__camps li.is-reached{opacity:1;background:#e8a23a;color:#fff}
+.climb__camps li.is-reached::after{background:#e8a23a}
+.climb__camps li.is-near{opacity:0}
+.climb__rope{position:absolute;right:30px;top:0;width:2px;background:repeating-linear-gradient(180deg,#f3c06b 0 4px,#b8762a 4px 8px);box-shadow:0 0 0 1px rgba(255,255,255,.6)}
+.climb__man{position:absolute;right:16px;bottom:0;width:58px;will-change:transform;filter:drop-shadow(0 0 1.2px #fff) drop-shadow(0 3px 4px rgba(0,0,0,.25))}
+.climb__man svg{display:block}
+.climb__alt{position:absolute;right:calc(100% + 4px);top:22px;white-space:nowrap;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;background:#10201b;color:#fff;padding:3px 8px;border-radius:999px}
+.climb .pose-b{display:none}
+.climb.step .pose-a{display:none}
+.climb.step .pose-b{display:inline}
+@media (max-width:960px){.climb{display:none}}

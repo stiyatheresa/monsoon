@@ -442,3 +442,165 @@
   stage.addEventListener('mouseleave', restart);
   go(0); restart();
 })();
+
+/* Section dividers: a different landscape for each transition */
+(function () {
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var AMBER = '#e8a23a', W = 1440, H = 170;
+  var seed = 7;
+  function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+  function P(d, fill, cls, extra) { return '<path' + (cls ? ' class="' + cls + '"' : '') + ' fill="' + fill + '" d="' + d + '"' + (extra || '') + '/>'; }
+
+  var make = {
+    /* Himalaya: layered peaks + trail to a summit flag */
+    peaks: function (c) {
+      return P('M0 170V95L110 62L210 88L340 30L460 74L590 46L710 84L850 34L975 66L1100 40L1215 78L1335 34L1440 62V170Z', c, 'l-back', ' opacity=".28"') +
+        P('M0 170V116L95 98L205 124L330 82L440 108L565 72L690 114L805 88L935 120L1055 78L1185 108L1305 92L1440 118V170Z', c, 'l-mid', ' opacity=".55"') +
+        '<path class="trail" d="M140 160Q300 140 420 116T640 92T790 62L850 36"/><line class="pole" x1="850" y1="36" x2="850" y2="10"/>' + P('M850 10L874 17L850 24Z', AMBER) +
+        P('M0 170V140C150 124 265 150 400 132S655 116 785 136S1055 150 1205 128S1385 134 1440 142V170Z', c);
+    },
+    /* Kerala: drifting backwater waves */
+    waves: function (c) {
+      var out = '';
+      [[240, 9, 88, .3, 22], [180, 7, 112, .55, 15], [160, 6, 136, 1, 10]].forEach(function (L, k) {
+        var d = 'M0 ' + H;
+        for (var x = 0; x <= W * 2; x += 10) d += 'L' + x + ' ' + (L[2] + Math.sin(x / L[0] * Math.PI * 2) * L[1]).toFixed(1);
+        d += 'L' + (W * 2) + ' ' + H + 'Z';
+        out += '<g class="wv" style="animation-duration:' + L[4] + 's' + (k === 1 ? ';animation-direction:reverse' : '') + '">' + P(d, c, '', ' opacity="' + L[3] + '"') + '</g>';
+      });
+      return out;
+    },
+    /* Africa: sun, acacia trees, savanna horizon */
+    savanna: function (c) {
+      function acacia(x, b, s) {
+        return P('M' + (x - 3 * s) + ' ' + b + 'L' + (x - 2 * s) + ' ' + (b - 34 * s) + 'L' + (x - 18 * s) + ' ' + (b - 50 * s) + 'L' + (x - 15 * s) + ' ' + (b - 52 * s) + 'L' + x + ' ' + (b - 40 * s) + 'L' + (x + 16 * s) + ' ' + (b - 54 * s) + 'L' + (x + 19 * s) + ' ' + (b - 51 * s) + 'L' + (x + 3 * s) + ' ' + (b - 34 * s) + 'L' + (x + 3 * s) + ' ' + b + 'Z', c) +
+          '<ellipse cx="' + x + '" cy="' + (b - 56 * s) + '" rx="' + (62 * s) + '" ry="' + (11 * s) + '" fill="' + c + '"/>' +
+          '<ellipse cx="' + (x + 14 * s) + '" cy="' + (b - 64 * s) + '" rx="' + (34 * s) + '" ry="' + (8 * s) + '" fill="' + c + '"/>';
+      }
+      return '<circle class="l-back" cx="1060" cy="92" r="52" fill="' + AMBER + '" opacity=".9"/>' +
+        P('M0 170V128Q240 104 520 122T1040 112T1440 120V170Z', c, 'l-mid', ' opacity=".3"') +
+        P('M0 170V142Q360 124 720 138T1440 132V170Z', c) +
+        acacia(250, 142, 1.1) + acacia(470, 138, .6) + acacia(1240, 136, 1.3) + acacia(1380, 134, .5);
+    },
+    /* Hot-air balloons drifting over hills */
+    balloons: function (c) {
+      function balloon(x, y, s, col, dur) {
+        return '<g class="bob" style="animation-duration:' + dur + 's">' +
+          P('M' + (x - 20 * s) + ' ' + y + 'Q' + (x - 24 * s) + ' ' + (y - 38 * s) + ' ' + x + ' ' + (y - 40 * s) + 'Q' + (x + 24 * s) + ' ' + (y - 38 * s) + ' ' + (x + 20 * s) + ' ' + y + 'Q' + (x + 12 * s) + ' ' + (y + 14 * s) + ' ' + (x + 5 * s) + ' ' + (y + 20 * s) + 'L' + (x - 5 * s) + ' ' + (y + 20 * s) + 'Q' + (x - 12 * s) + ' ' + (y + 14 * s) + ' ' + (x - 20 * s) + ' ' + y + 'Z', col) +
+          P('M' + x + ' ' + (y - 40 * s) + 'Q' + (x - 8 * s) + ' ' + (y - 10 * s) + ' ' + (x - 3 * s) + ' ' + (y + 20 * s) + 'L' + (x + 3 * s) + ' ' + (y + 20 * s) + 'Q' + (x + 8 * s) + ' ' + (y - 10 * s) + ' ' + x + ' ' + (y - 40 * s) + 'Z', '#ffffff', '', ' opacity=".35"') +
+          '<path d="M' + (x - 5 * s) + ' ' + (y + 20 * s) + 'L' + (x - 4 * s) + ' ' + (y + 26 * s) + 'M' + (x + 5 * s) + ' ' + (y + 20 * s) + 'L' + (x + 4 * s) + ' ' + (y + 26 * s) + '" stroke="' + col + '" stroke-width="1.2"/>' +
+          '<rect x="' + (x - 4 * s) + '" y="' + (y + 26 * s) + '" width="' + (8 * s) + '" height="' + (6 * s) + '" rx="1" fill="' + col + '"/></g>';
+      }
+      return balloon(240, 70, 1.1, AMBER, 6) + balloon(520, 46, .6, '#c4553a', 8) + balloon(1150, 60, 1.3, AMBER, 7) + balloon(1330, 34, .55, '#e9e4d8', 9) +
+        P('M0 170V120Q200 92 420 116T860 104T1440 112V170Z', c, 'l-mid', ' opacity=".3"') +
+        P('M0 170V142Q300 120 640 138T1440 128V170Z', c);
+    },
+    /* Indian Ocean: palm island on rolling sea */
+    island: function (c) {
+      function palm(x, b, s, lean) {
+        var tx = x + lean * s, ty = b - 70 * s, out = '<path d="M' + x + ' ' + b + 'Q' + (x + lean * .2 * s) + ' ' + (b - 40 * s) + ' ' + tx + ' ' + ty + '" stroke="' + c + '" stroke-width="' + (5 * s) + '" fill="none" stroke-linecap="round"/>';
+        [[-46, 8], [-30, -14], [0, -22], [30, -14], [48, 10]].forEach(function (f) {
+          out += P('M' + tx + ' ' + ty + 'Q' + (tx + f[0] * .5 * s) + ' ' + (ty + f[1] * s - 14 * s) + ' ' + (tx + f[0] * s) + ' ' + (ty + f[1] * s + 6 * s) + 'Q' + (tx + f[0] * .5 * s) + ' ' + (ty + f[1] * s - 6 * s) + ' ' + tx + ' ' + ty + 'Z', c);
+        });
+        return '<g class="sway">' + out + '</g>';
+      }
+      var sea = '';
+      [[200, 6, 140, .45, 18], [160, 5, 150, 1, 11]].forEach(function (L, k) {
+        var d = 'M0 ' + H;
+        for (var x = 0; x <= W * 2; x += 10) d += 'L' + x + ' ' + (L[2] + Math.sin(x / L[0] * Math.PI * 2) * L[1]).toFixed(1);
+        sea += '<g class="wv" style="animation-duration:' + L[4] + 's' + (k ? '' : ';animation-direction:reverse') + '">' + P(d + 'L' + W * 2 + ' ' + H + 'Z', c, '', ' opacity="' + L[3] + '"') + '</g>';
+      });
+      return '<circle class="l-back" cx="300" cy="78" r="40" fill="' + AMBER + '" opacity=".85"/>' +
+        P('M960 146Q1060 110 1200 112T1400 146Z', c) + palm(1080, 120, 1.15, 26) + palm(1190, 114, .9, -18) + palm(1290, 124, .7, 14) + sea;
+    },
+    /* Bhutan: prayer flags fluttering over hills */
+    flags: function (c) {
+      var cols = ['#2f6fb5', '#f4f1ea', '#c4413a', '#3f8f5a', '#e8b53a'], out = '<path d="M60 50Q720 150 1380 40" stroke="#f4f1ea" stroke-width="1.5" fill="none" opacity=".8"/>';
+      for (var i = 1; i < 28; i++) {
+        var t = i / 28, x = (1 - t) * (1 - t) * 60 + 2 * (1 - t) * t * 720 + t * t * 1380, y = (1 - t) * (1 - t) * 50 + 2 * (1 - t) * t * 150 + t * t * 40;
+        out += '<path class="flutter" style="animation-delay:-' + (i * .23).toFixed(2) + 's" d="M' + (x - 11).toFixed(1) + ' ' + y.toFixed(1) + 'H' + (x + 11).toFixed(1) + 'L' + (x + 9).toFixed(1) + ' ' + (y + 26).toFixed(1) + 'L' + (x - 9).toFixed(1) + ' ' + (y + 26).toFixed(1) + 'Z" fill="' + cols[i % 5] + '"/>';
+      }
+      return P('M0 170V112L180 84L330 116L520 70L700 112L900 78L1080 118L1260 82L1440 108V170Z', c, 'l-back', ' opacity=".25"') +
+        out + '<line x1="60" y1="50" x2="60" y2="150" stroke="#f4f1ea" stroke-width="3"/><line x1="1380" y1="40" x2="1380" y2="150" stroke="#f4f1ea" stroke-width="3"/>' +
+        P('M0 170V146Q360 128 720 142T1440 138V170Z', c);
+    },
+    /* Footer: campsite with tent and a crackling fire */
+    camp: function (c) {
+      var pines = '';
+      for (var x = 10; x < W + 40; x += 34 + rnd() * 30) {
+        var h = 40 + rnd() * 50, w = h * .3;
+        if (x > 820 && x < 1180) continue;
+        pines += 'M' + (x - w).toFixed(0) + ' 150L' + x.toFixed(0) + ' ' + (150 - h).toFixed(0) + 'L' + (x + w).toFixed(0) + ' 150Z';
+      }
+      return '<g class="l-back" opacity=".3">' + P(pines, c) + '</g>' +
+        P('M0 170V146Q360 132 720 144T1440 140V170Z', c) +
+        P('M856 152L940 66L1024 152Z', c) + P('M940 66L925 152H955Z', '#ffffff', '', ' opacity=".12"') + P('M940 100L923 152H957Z', AMBER, 'glow', ' opacity=".55"') +
+        '<path d="M1080 146L1120 132M1084 132L1124 146" stroke="' + c + '" stroke-width="6" stroke-linecap="round"/>' +
+        '<g class="flame">' + P('M1102 136Q1086 116 1100 92Q1104 110 1112 104Q1122 120 1102 136Z', AMBER) + P('M1102 136Q1094 124 1102 110Q1108 122 1110 120Q1112 130 1102 136Z', '#f6d27a') + '</g>';
+    }
+  };
+
+  var list = Array.prototype.slice.call(document.querySelectorAll('.peaks'));
+  list.forEach(function (el) {
+    var st = el.dataset.style || 'peaks', fn = make[st] || make.peaks;
+    var keep = (st === 'savanna' || st === 'balloons' || st === 'island' || st === 'camp') ? 'xMidYMax slice' : 'none';
+    el.style.background = el.dataset.from;
+    el.classList.add('peaks--' + st);
+    el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="' + keep + '">' + fn(el.dataset.to) + '</svg>';
+  });
+  if (reduced || !list.length) return;
+  var ticking = false;
+  function fx() {
+    ticking = false;
+    var vh = window.innerHeight;
+    list.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      var p = (r.top - vh / 2) / vh;
+      Array.prototype.forEach.call(el.querySelectorAll('.l-back'), function (n) { n.style.transform = 'translate3d(' + (p * 40) + 'px,' + (p * 14) + 'px,0)'; });
+      Array.prototype.forEach.call(el.querySelectorAll('.l-mid'), function (n) { n.style.transform = 'translate3d(' + (p * -24) + 'px,' + (p * 7) + 'px,0)'; });
+      Array.prototype.forEach.call(el.querySelectorAll('.trail'), function (n) { n.style.setProperty('--dash', String(p * 120)); });
+    });
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(fx); } }, { passive: true });
+  fx();
+})();
+
+
+/* Side climber: scales the cliff with scroll progress (smoothed) */
+(function () {
+  'use strict';
+  var wrap = document.getElementById('climb');
+  if (!wrap) return;
+  var man = document.getElementById('climbMan'), alt = document.getElementById('climbAlt'), rope = document.getElementById('climbRope');
+  var camps = Array.prototype.slice.call(wrap.querySelectorAll('.climb__camps li'));
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = 0, target = 0, lastStep = -1, raf = null;
+  function measure() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    target = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
+    wrap.classList.toggle('is-on', window.scrollY > 200);
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function tick() {
+    raf = null;
+    cur += (target - cur) * (reduced ? 1 : 0.12);
+    if (Math.abs(target - cur) < 0.0005) cur = target;
+    var H = wrap.clientHeight, room = H - man.offsetHeight, y = cur * room;
+    man.style.transform = 'translate3d(0,' + (-y) + 'px,0)';
+    rope.style.height = Math.max(H - y - 30, 0) + 'px';
+    alt.textContent = Math.round(cur * 5895).toLocaleString('en-US') + ' m';
+    var step = Math.floor(cur * 160);
+    if (step !== lastStep) { wrap.classList.toggle('step', step % 2 === 1); lastStep = step; }
+    camps.forEach(function (li) {
+      var at = parseFloat(li.style.getPropertyValue('--y')) / 100;
+      li.classList.toggle('is-reached', cur >= at - 0.002);
+      li.classList.toggle('is-near', Math.abs(cur - at) < 0.06 && at > 0 && at < 1);
+    });
+    if (cur !== target) raf = requestAnimationFrame(tick);
+  }
+  window.addEventListener('scroll', measure, { passive: true });
+  window.addEventListener('resize', measure);
+  measure();
+})();

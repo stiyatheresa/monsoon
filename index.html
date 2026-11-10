@@ -143,6 +143,7 @@
   <div class="center"><button class="btn btn--outline" type="button" id="moreTrips" aria-expanded="false">Show all adventures</button></div>
 </section>
 
+<div class="peaks" data-from="#ffffff" data-to="#14201d" data-style="peaks" aria-hidden="true"></div>
 <!-- Destinations: pinned scroll story -->
 <section class="story" id="destinations" style="--steps:4">
   <span class="anchor" id="kerala"></span>
@@ -167,6 +168,7 @@
   </div>
 </section>
 
+<div class="peaks peaks--flush" data-from="#14201d" data-to="#ffffff" data-style="waves" aria-hidden="true"></div>
 <!-- Trip levels -->
 <section class="section wrap reveal" id="levels">
   <div class="levels">
@@ -183,6 +185,7 @@
   </div>
 </section>
 
+<div class="peaks" data-from="#ffffff" data-to="#14201d" data-style="savanna" aria-hidden="true"></div>
 <!-- Signature expedition: full-bleed with counting altitude -->
 <section class="sigx" id="expeditions">
   <img class="sigx__bg" loading="lazy" src="https://unsplash.com/photos/QvUp9XXZgdc/download?force=true&amp;w=2000" alt="">
@@ -330,7 +333,42 @@
   </div>
 </footer>
 
-<div class="alt" id="alt" aria-hidden="true"><span>Altitude</span><b id="altVal">0 m</b><i class="alt__track"><i class="alt__fill" id="altFill"></i></i><small>Kilimanjaro<br>5,895 m</small></div>
+<div class="climb" id="climb" aria-hidden="true">
+  <svg class="climb__cliff" viewBox="0 0 40 1000" preserveAspectRatio="none"><path d="M40 0H14L18 40L10 90L16 140L8 200L15 260L9 320L17 380L11 440L18 500L9 560L15 620L8 680L16 740L10 800L17 860L9 920L14 1000H40Z" fill="#0b4a3c"/><path d="M14 0L18 40L10 90L16 140L8 200L15 260L9 320L17 380L11 440L18 500L9 560L15 620L8 680L16 740L10 800L17 860L9 920L14 1000" fill="none" stroke="#fff" stroke-width="1.5" vector-effect="non-scaling-stroke" opacity=".9"/><path d="M26 60L30 120M22 300L27 350M28 520L24 590M25 760L29 830" stroke="#fff" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".25"/></svg>
+  <ol class="climb__camps">
+    <li style="--y:100%">Summit<b>5,895 m</b></li>
+    <li style="--y:66%">Camp 2<b>3,930 m</b></li>
+    <li style="--y:33%">Camp 1<b>1,965 m</b></li>
+    <li style="--y:0%">Base</li>
+  </ol>
+  <svg class="climb__flag" viewBox="0 0 24 30" width="24" height="30"><path d="M4 30V2" stroke="#fff" stroke-width="2"/><path d="M4 2L22 7L4 13Z" fill="#e8a23a"/></svg>
+  <i class="climb__rope" id="climbRope"></i>
+  <div class="climb__man" id="climbMan">
+    <svg viewBox="0 0 44 64" width="58" height="84">
+      <g stroke-linecap="round" stroke-linejoin="round">
+        <g class="pose-a" fill="none">
+          <path d="M22 22L30 14L37 5" stroke="#10201b" stroke-width="4.5"/>
+          <path d="M20 26L28 30L36 24" stroke="#10201b" stroke-width="4.5"/>
+          <path d="M18 38L28 40L35 47" stroke="#2a3a35" stroke-width="5.5"/>
+          <path d="M16 39L16 50L13 60" stroke="#2a3a35" stroke-width="5.5"/>
+        </g>
+        <g class="pose-b" fill="none">
+          <path d="M20 26L29 22L37 18" stroke="#10201b" stroke-width="4.5"/>
+          <path d="M22 22L28 10L36 2" stroke="#10201b" stroke-width="4.5"/>
+          <path d="M16 39L18 50L26 54L35 56" stroke="#2a3a35" stroke-width="5.5"/>
+          <path d="M18 38L27 36L34 40" stroke="#2a3a35" stroke-width="5.5"/>
+        </g>
+        <rect x="6" y="18" width="10" height="16" rx="4" fill="#0b4a3c" stroke="#fff" stroke-width="1"/>
+        <path d="M14 20Q22 16 24 24L22 38Q16 42 13 38Z" fill="#e8a23a"/>
+        <path d="M13 34L23 35" stroke="#10201b" stroke-width="2"/>
+        <circle cx="21" cy="12" r="5.5" fill="#f1c9a5"/>
+        <path d="M15.2 11.5a5.8 5.8 0 0 1 11.6 0Z" fill="#c4413a"/>
+        <circle cx="25" cy="12.5" r=".9" fill="#10201b"/>
+      </g>
+    </svg>
+    <b class="climb__alt" id="climbAlt">0 m</b>
+  </div>
+</div>
 
 <a class="wa" href="https://wa.me/910000000000" aria-label="Chat on WhatsApp">Chat with us</a>
 
