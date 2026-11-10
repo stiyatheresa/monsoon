@@ -62,7 +62,7 @@
   /* 4. Trip filters */
   var trips = $$('.trip'), tripsEmpty = $('#tripsEmpty');
   var state = { tab: 'popular', text: '', activity: '', level: '' };
-  var LIMIT = 4, expanded = false, moreBtn = $('#moreTrips');
+  var LIMIT = 5, expanded = false, moreBtn = $('#moreTrips');
   moreBtn.addEventListener('click', function () { expanded = !expanded; applyFilters(); });
 
   function applyFilters() {
@@ -78,7 +78,8 @@
     });
     var idx = 0;
     trips.forEach(function (t) {
-      if (t.hidden) { t.classList.remove('is-extra'); return; }
+      if (t.hidden) { t.classList.remove('is-extra', 'is-feature'); return; }
+      t.classList.toggle('is-feature', idx === 0);
       t.classList.toggle('is-extra', !expanded && idx >= LIMIT);
       idx++;
     });
